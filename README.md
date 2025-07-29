@@ -1,6 +1,6 @@
 # Mailcoach Subscription workflow for Umbraco Forms
 
-![Mailcoach for Umbraco Forms Logo](https://raw.githubusercontent.com/YourITGroup/Our.Umbraco.Forms.Mailcoach/master/GithubFiles/Logo/Subscribe_logo.png)
+![Mailcoach for Umbraco Forms Logo](https://raw.githubusercontent.com/YourITGroup/our-umbraco-forms-mailcoach/main/GithubFiles/Logo/Subscribe_logo.png)
 
 An Umbraco Forms workflow that automatically adds form subscribers to Mailcoach email lists.
 

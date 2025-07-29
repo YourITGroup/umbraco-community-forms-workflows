@@ -10,7 +10,6 @@
 
   <PropertyGroup>
     <PackageId>Our.Umbraco.Forms.Mailcoach</PackageId>
-    <Product>Our.Umbraco.Forms.Mailcoach</Product>
     <Title>Mailcoach Mailing List management Workflow for Umbraco Forms</Title>
   </PropertyGroup>
 
@@ -30,7 +29,7 @@
 		<PackageProjectUrl>https://github.com/YourITGroup/our-umbraco-forms-mailcoach</PackageProjectUrl>
 		<PackageIcon>Subscribe_logo.png</PackageIcon>
 		<PackageIconUrl>
-			https://raw.githubusercontent.com/YourITGroup/our-umbraco-forms-mailcoach/master/assets/Subscribe_logo.png</PackageIconUrl>
+			https://raw.githubusercontent.com/YourITGroup/our-umbraco-forms-mailcoach/main/GithubFiles/Logo/Subscribe_logo.png</PackageIconUrl>
 		<PackageProjectUrl>https://github.com/YourITGroup/our-umbraco-forms-mailcoach</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/YourITGroup/our-umbraco-forms-mailcoach</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
