@@ -1,0 +1,87 @@
+name: Our.Umbraco.Forms.Mailcoach - Release
+
+on:
+  push:
+    branches: [ master ]
+
+env:
+  SOLUTION: Our.Umbraco.Forms.Mailcoach.Release.sln
+  PLUGIN_PROJECT: src/Our.Umbraco.Forms.Mailcoach/Our.Umbraco.Forms.Mailcoach.csproj
+  OUTPUT_PATH: ${{ github.workspace }}/.output
+
+jobs:
+  publish-nuget:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    strategy:
+      matrix:
+        dotnet-version: ['9.x' ]
+
+    steps:
+
+    # - name: Install GitVersion
+    #   uses: gittools/actions/gitversion/setup@v0.9.7
+    #   with:
+    #     versionSpec: '5.x'
+
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    # Support @umbraco-cms/backoffice@16.0.0 requires node >= 22
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        
+    - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
+      uses: actions/setup-dotnet@v3
+
+      with:
+        dotnet-version: ${{ matrix.dotnet-version }}
+        
+    - name: Get Release Version
+      id: package_version
+      uses: KageKirin/get-csproj-version@v0.0.1
+      with:
+        file: ${{ env.PLUGIN_PROJECT }}
+        regex: ^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?:-(?<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$
+
+    - name: Check Version v${{ steps.package_version.outputs.version }} Pre-Release state
+      id: check_prerelease
+      run: |
+        if [[ ${{ steps.package_version.outputs.version }} =~ ^[0-9]+\.[0-9]+\.[0-9]+-.+$ ]]; then
+            echo Pre-Release detected
+            echo "prerelease=true" >> $GITHUB_OUTPUT
+        else
+            echo Pre-Release NOT detected
+            echo "prerelease=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.SOLUTION }}
+
+    - run: dotnet build ${{ env.SOLUTION }} --configuration Release
+
+    - name: Create Nuget Packages
+      run: dotnet pack ${{ env.SOLUTION }} --configuration Release -o  ${{ env.OUTPUT_PATH }}
+      
+    - name: Publish to NuGet
+      working-directory: ${{ env.OUTPUT_PATH }}
+      run: dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json --skip-duplicate --api-key ${{ secrets.NUGET_API_KEY }}
+
+    - uses: avakar/tag-and-release@v1
+      name: Create Release Tag v${{ steps.package_version.outputs.version }}
+      id: release
+      with:
+        tag_name: v${{ steps.package_version.outputs.version }}
+        prerelease: ${{ steps.check_prerelease.outputs.prerelease }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Release information for v${{ steps.package_version.outputs.version }}
+      run: |
+        echo Release Id: ${{ steps.release.outputs.id }}
+        echo Upload URL: ${{ steps.release.outputs.upload_url }}
+        echo Release URL: ${{ steps.release.outputs.html_url }}

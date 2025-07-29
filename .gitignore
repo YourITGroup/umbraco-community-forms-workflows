@@ -52,3 +52,15 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+
+# Umbraco
+
+# Ignore the Models Builder models out of date flag
+**/ood.flag
+
+.DS_Store
+src/MailCoach.Test/Views/Partials
+src/MailCoach.Test/wwwroot/App_Plugins
+src/MailCoach.Test/appsettings-schema.*
+src/MailCoach.Test/umbraco-package-schema.json

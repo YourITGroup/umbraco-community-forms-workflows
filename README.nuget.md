@@ -1,4 +1,4 @@
-# Mailcoach Subscription workflow for Umbraco Forms
+﻿# Mailcoach Subscription workflow for Umbraco Forms
 
 ![Mailcoach for Umbraco Forms Logo](https://raw.githubusercontent.com/YourITGroup/Our.Umbraco.Forms.Mailcoach/master/GithubFiles/Logo/Subscribe_logo.png)
 
@@ -13,13 +13,6 @@ An Umbraco Forms workflow that automatically adds form subscribers to Mailcoach 
 - Direct tags configuration for all subscribers
 - Option to skip email confirmation for immediate subscription
 - Comprehensive error logging and handling
-- Support for Umbraco Forms 13.5+
-
-## Installation
-
-1. Install the package via NuGet or include the project in your Umbraco solution
-2. Build and run your Umbraco application
-3. The workflow will be automatically registered and available in Umbraco Forms
 
 ## Configuration
 
@@ -74,8 +67,3 @@ Tags are configured as a direct setting (not mapped from form fields) and applie
 - Umbraco Forms 13.5+
 - .NET 8.0
 - Valid Mailcoach account with API access
-
-## Logo
-
-The package logo uses the "mailing list" (by Thomas Deckert) icon from the Noun Project, licensed under CC BY 3.0 US.
- 
