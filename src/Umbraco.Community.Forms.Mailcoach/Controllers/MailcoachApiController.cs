@@ -1,26 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
-using Our.Umbraco.Forms.Mailcoach.Services;
+using Umbraco.Community.Forms.Mailcoach.Services;
 using Umbraco.Cms.Web.BackOffice.Controllers;
 using Umbraco.Cms.Web.Common.Attributes;
 
-namespace Our.Umbraco.Forms.Mailcoach.Controllers;
+namespace Umbraco.Community.Forms.Mailcoach.Controllers;
 
 [PluginController("Mailcoach")]
 public class MailcoachApiController(IMailcoachService mailcoachService) : UmbracoAuthorizedApiController
 {
     [HttpGet]
-    public async Task<IActionResult> GetEmailLists()
+    public async Task<IActionResult> GetMailingLists()
     {
         try
         {
-            var emailLists = await mailcoachService.GetEmailListsAsync();
-            
-            var result = emailLists.Select(list => new
-            {
-                value = list.Id,
-                label = list.Name
-            }).ToList();
+            var emailLists = await mailcoachService.GetMailingListsAsync();
 
+            var result = emailLists;
+            
             return Ok(result);
         }
         catch (Exception ex)

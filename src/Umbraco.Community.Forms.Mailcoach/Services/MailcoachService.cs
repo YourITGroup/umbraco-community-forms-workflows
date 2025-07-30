@@ -3,10 +3,10 @@ using System.Text;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Our.Umbraco.Forms.Mailcoach.Configuration;
-using Our.Umbraco.Forms.Mailcoach.Models;
+using Umbraco.Community.Forms.Mailcoach.Configuration;
+using Umbraco.Community.Forms.Mailcoach.Models;
 
-namespace Our.Umbraco.Forms.Mailcoach.Services;
+namespace Umbraco.Community.Forms.Mailcoach.Services;
 
 public class MailcoachService : IMailcoachService
 {
@@ -67,7 +67,7 @@ public class MailcoachService : IMailcoachService
     }
 
     /// <inheritdoc />
-    public async Task<List<MailcoachEmailList>> GetEmailListsAsync()
+    public async Task<List<MailcoachEmailList>> GetMailingListsAsync()
     {
         try
         {

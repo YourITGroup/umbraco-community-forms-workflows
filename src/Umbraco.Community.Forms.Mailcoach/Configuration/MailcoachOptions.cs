@@ -1,4 +1,4 @@
-namespace Our.Umbraco.Forms.Mailcoach.Configuration;
+namespace Umbraco.Community.Forms.Mailcoach.Configuration;
 
 public class MailcoachOptions
 {

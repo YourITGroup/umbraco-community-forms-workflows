@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Our.Umbraco.Forms.Mailcoach.Models;
+namespace Umbraco.Community.Forms.Mailcoach.Models;
 
 public class MailcoachSubscriber
 {

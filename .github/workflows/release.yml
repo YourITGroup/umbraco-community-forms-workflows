@@ -1,12 +1,12 @@
-name: Our.Umbraco.Forms.Mailcoach - Release
+name: Umbraco.Community.Forms.Mailcoach - Release
 
 on:
   push:
     branches: [ main ]
 
 env:
-  SOLUTION: Our.Umbraco.Forms.Mailcoach.Release.sln
-  PLUGIN_PROJECT: src/Our.Umbraco.Forms.Mailcoach/Our.Umbraco.Forms.Mailcoach.csproj
+  SOLUTION: Umbraco.Community.Forms.Mailcoach.Release.sln
+  PLUGIN_PROJECT: src/Umbraco.Community.Forms.Mailcoach/Umbraco.Community.Forms.Mailcoach.csproj
   OUTPUT_PATH: ${{ github.workspace }}/.output
 
 jobs:
