@@ -91,7 +91,7 @@ public class MailcoachWorkflow : WorkflowType
                 string.IsNullOrEmpty(EmailListId))
             {
                 _logger.LogWarning("Mailcoach workflow not configured properly");
-                return WorkflowExecutionStatus.Failed;
+                return WorkflowExecutionStatus.NotConfigured;
             }
 
             var subscriber = MapFormDataToSubscriber(context);
@@ -120,7 +120,7 @@ public class MailcoachWorkflow : WorkflowType
         List<FieldMapping> mappings = [];
         if (!string.IsNullOrEmpty(Fields))
         {
-            IEnumerable<FieldMapping> source = JsonConvert.DeserializeObject<IEnumerable<FieldMapping>>(Fields, FormsJsonSerializerSettings.Default) ?? [];
+            var source = JsonConvert.DeserializeObject<IEnumerable<FieldMapping>>(Fields, FormsJsonSerializerSettings.Default) ?? [];
             if (source != null)
             {
                 mappings = [.. source.Select(x =>
