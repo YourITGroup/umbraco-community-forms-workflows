@@ -9,20 +9,20 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>Our.Umbraco.Forms.Mailcoach</PackageId>
+    <PackageId>Umbraco.Community.Forms.Mailcoach</PackageId>
     <Title>Mailcoach Mailing List management Workflow for Umbraco Forms</Title>
   </PropertyGroup>
 
 
 	<!-- NuGet package metadata -->
 	<PropertyGroup>
-		<Version>13.0.0-beta2</Version>
+		<Version>13.0.0-beta3</Version>
 		<Description>
 			Mailcoach Mailing List management Workflow for Umbraco Forms
 
 		</Description>
 		<Company>Your IT Group</Company>
-		<Product>Our.Umbraco.Forms.Mailcoach</Product>
+		<Product>Umbraco.Community.Forms.Mailcoach</Product>
 		<Authors>Robert Foster-Williams</Authors>
 		<Copyright>Copyright © 2025 © $(Company)</Copyright>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -43,6 +43,7 @@
 
   <ItemGroup>
     <PackageReference Include="Umbraco.Forms.Core" Version="13.5.0" />
+    <PackageReference Include="Umbraco.Forms.Core.Providers" Version="13.5.0" />
   </ItemGroup>
 
 	<ItemGroup>
