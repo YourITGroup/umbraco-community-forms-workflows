@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Our.Umbraco.Forms.Mailcoach.Configuration;
 using Our.Umbraco.Forms.Mailcoach.Models;
+using Our.Umbraco.Forms.Mailcoach.Services;
 using Umbraco.Forms.Core;
 using Umbraco.Forms.Core.Attributes;
 using Umbraco.Forms.Core.Enums;
@@ -12,7 +13,7 @@ namespace Our.Umbraco.Forms.Mailcoach.Workflows;
 
 public class MailcoachWorkflow : WorkflowType
 {
-    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IMailcoachService mailcoachService;
     private readonly ILogger<MailcoachWorkflow> _logger;
     private readonly MailcoachOptions _mailcoachOptions;
 
@@ -36,9 +37,9 @@ public class MailcoachWorkflow : WorkflowType
         View = "Checkbox")]
     public bool SkipConfirmation { get; set; } = false;
 
-    public MailcoachWorkflow(IHttpClientFactory httpClientFactory, ILogger<MailcoachWorkflow> logger, IOptions<MailcoachOptions> mailcoachOptions)
+    public MailcoachWorkflow(IMailcoachService mailcoachService, ILogger<MailcoachWorkflow> logger, IOptions<MailcoachOptions> mailcoachOptions)
     {
-        _httpClientFactory = httpClientFactory;
+        this.mailcoachService = mailcoachService;
         _logger = logger;
         _mailcoachOptions = mailcoachOptions.Value;
         
@@ -53,7 +54,7 @@ public class MailcoachWorkflow : WorkflowType
     {
         var exceptions = new List<Exception>();
 
-        if (string.IsNullOrEmpty(_mailcoachOptions.ApiEndpoint))
+        if (string.IsNullOrEmpty(_mailcoachOptions.ApiDomain))
         {
             exceptions.Add(new ArgumentException("Mailcoach API Endpoint is not configured in appsettings.json"));
         }
@@ -70,7 +71,7 @@ public class MailcoachWorkflow : WorkflowType
     {
         try
         {
-            if (string.IsNullOrEmpty(_mailcoachOptions.ApiEndpoint) || 
+            if (string.IsNullOrEmpty(_mailcoachOptions.ApiDomain) || 
                 string.IsNullOrEmpty(_mailcoachOptions.ApiToken) || 
                 string.IsNullOrEmpty(EmailListId))
             {
@@ -86,7 +87,7 @@ public class MailcoachWorkflow : WorkflowType
                 return WorkflowExecutionStatus.Failed;
             }
 
-            var success = await AddSubscriberToMailcoach(subscriber);
+            var success = await mailcoachService.AddSubscriber(subscriber, EmailListId);
             
             return success ? WorkflowExecutionStatus.Completed : WorkflowExecutionStatus.Failed;
         }
@@ -176,44 +177,5 @@ public class MailcoachWorkflow : WorkflowType
         }
 
         return string.Empty;
-    }
-
-    private async Task<bool> AddSubscriberToMailcoach(MailcoachSubscriber subscriber)
-    {
-        try
-        {
-            using var httpClient = _httpClientFactory.CreateClient();
-            
-            var endpoint = $"{_mailcoachOptions.ApiEndpoint.TrimEnd('/')}/api/email-lists/{EmailListId}/subscribers";
-            
-            httpClient.DefaultRequestHeaders.Authorization = 
-                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _mailcoachOptions.ApiToken);
-
-            var requestBody = JsonConvert.SerializeObject(subscriber, Formatting.None, 
-                new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-
-            var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
-
-            var response = await httpClient.PostAsync(endpoint, content);
-
-            if (response.IsSuccessStatusCode)
-            {
-                _logger.LogInformation("Successfully added subscriber {Email} to Mailcoach list {ListId}", 
-                    subscriber.Email, EmailListId);
-                return true;
-            }
-            else
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                _logger.LogError("Failed to add subscriber to Mailcoach. Status: {StatusCode}, Response: {Response}", 
-                    response.StatusCode, errorContent);
-                return false;
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Exception occurred while adding subscriber to Mailcoach");
-            return false;
-        }
     }
 }

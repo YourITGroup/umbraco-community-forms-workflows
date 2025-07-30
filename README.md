@@ -30,7 +30,7 @@ Add the following configuration to your `appsettings.json`:
 ```json
 {
   "Mailcoach": {
-    "ApiEndpoint": "https://your-mailcoach-domain.com",
+    "ApiDomain": "your-mailcoach-domain.com",
     "ApiToken": "your-mailcoach-api-token"
   }
 }

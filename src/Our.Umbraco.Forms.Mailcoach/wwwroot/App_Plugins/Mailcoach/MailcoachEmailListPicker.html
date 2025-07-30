@@ -1,36 +1,22 @@
 <div ng-controller="MailcoachEmailListPickerController">
-    <div class="umb-control-group">
-        <div class="controls">
-            <div ng-if="loading" class="umb-loader-wrapper">
-                <div class="umb-loader">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-                <p>Loading email lists...</p>
-            </div>
-            
-            <div ng-if="!loading && error" class="alert alert-danger">
-                <strong>Error:</strong> {{error}}
-            </div>
-            
-            <div ng-if="!loading && !error">
-                <select name="emailList" title="Email List" class="form-control" 
-                        ng-model="model.value" 
-                        ng-options="list.value as list.label for list in emailLists"
-                        ng-change="model.value = model.value">
-                    <option value="">Select an email list...</option>
-                </select>
-                <small class="help-block" ng-if="emailLists.length === 0">
-                    No email lists found. Please check your Mailcoach configuration.
-                </small>
-                <small class="help-block" ng-if="emailLists.length > 0">
-                    Found {{emailLists.length}} email list(s)
-                </small>
-            </div>
-        </div>
+    <div ng-if="loading">
+        <p>Loading email lists...</p>
+    </div>
+
+    <div ng-if="!loading && error" class="alert alert-danger">
+        <strong>Error:</strong> {{error}}
+    </div>
+
+    <div ng-if="!loading && !error">
+        <select name="emailList" title="Email List" class="form-control" ng-model="model.value"
+            ng-options="list.value as list.label for list in emailLists" ng-change="model.value = model.value">
+            <option value="">Select an email list...</option>
+        </select>
+        <small class="help-block" ng-if="emailLists.length === 0">
+            No email lists found. Please check your Mailcoach configuration.
+        </small>
+        <small class="help-block" ng-if="emailLists.length > 0">
+            Found {{emailLists.length}} email list(s)
+        </small>
     </div>
 </div>
