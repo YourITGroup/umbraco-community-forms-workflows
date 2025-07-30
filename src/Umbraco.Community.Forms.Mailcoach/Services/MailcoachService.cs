@@ -33,16 +33,13 @@ public class MailcoachService : IMailcoachService
         {
             httpClient.BaseAddress = new Uri($"https://{this.mailcoachOptions.ApiDomain.TrimEnd('/')}/api/");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", mailcoachOptions.Value.ApiToken);
-            BaseUrl = $"https://{this.mailcoachOptions.ApiDomain.TrimEnd('/')}/api/";
         }
     }
-
-    protected string? BaseUrl { get; private set; }
 
     /// <inheritdoc />
     public async Task<bool> AddSubscriber(MailcoachSubscriber subscriber, string emailListId)
     {
-        var endpoint = "email-lists/{emailListId}/subscribers";
+        var endpoint = $"email-lists/{emailListId}/subscribers";
 
         var requestBody = JsonConvert.SerializeObject(subscriber, Formatting.None,
             new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
@@ -60,8 +57,8 @@ public class MailcoachService : IMailcoachService
         else
         {
             var errorContent = await response.Content.ReadAsStringAsync();
-            logger.LogError("Failed to add subscriber to Mailcoach. Status: {StatusCode}, Response: {Response}",
-                response.StatusCode, errorContent);
+            logger.LogError("Failed to add subscriber {email} to Mailcoach list {ListId}. Status: {StatusCode}, Response: {Response}",
+                subscriber.Email, emailListId, response.StatusCode, errorContent);
             return false;
         }
     }
