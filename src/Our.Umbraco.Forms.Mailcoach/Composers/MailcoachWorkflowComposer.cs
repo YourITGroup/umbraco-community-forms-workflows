@@ -13,7 +13,7 @@ public class MailcoachWorkflowComposer : IComposer
     public void Compose(IUmbracoBuilder builder)
     {
         builder.Services.Configure<MailcoachOptions>(builder.Config.GetSection(MailcoachOptions.SectionName));
-        builder.Services.AddScoped<IMailcoachService, MailcoachService>();
+        builder.Services.AddHttpClient<IMailcoachService, MailcoachService>();
         
         builder.WithCollectionBuilder<WorkflowCollectionBuilder>()
             .Add<MailcoachWorkflow>();

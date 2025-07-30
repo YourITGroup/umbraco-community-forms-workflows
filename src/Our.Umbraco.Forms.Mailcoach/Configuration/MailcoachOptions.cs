@@ -4,6 +4,6 @@ public class MailcoachOptions
 {
     public const string SectionName = "Mailcoach";
     
-    public string ApiEndpoint { get; set; } = string.Empty;
+    public string ApiDomain { get; set; } = string.Empty;
     public string ApiToken { get; set; } = string.Empty;
 }
