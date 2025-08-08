@@ -1,8 +1,8 @@
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using Umbraco.Community.Forms.Mailcoach.Configuration;
 using Umbraco.Community.Forms.Mailcoach.Models;
 
@@ -41,8 +41,7 @@ public class MailcoachService : IMailcoachService
     {
         var endpoint = $"email-lists/{emailListId}/subscribers";
 
-        var requestBody = JsonConvert.SerializeObject(subscriber, Formatting.None,
-            new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+        var requestBody = JsonSerializer.Serialize(subscriber);
 
         var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
 
@@ -75,7 +74,7 @@ public class MailcoachService : IMailcoachService
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                var emailListsResponse = JsonConvert.DeserializeObject<MailcoachEmailListsResponse>(content);
+                var emailListsResponse = JsonSerializer.Deserialize<MailcoachEmailListsResponse>(content);
 
                 if (emailListsResponse?.Data != null)
                 {

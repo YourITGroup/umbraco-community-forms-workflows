@@ -1,24 +1,24 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Umbraco.Community.Forms.Mailcoach.Models;
 
 public class MailcoachSubscriber
 {
-    [JsonProperty("email")]
+    [JsonPropertyName("email")]
     public string Email { get; set; } = string.Empty;
 
-    [JsonProperty("first_name")]
+    [JsonPropertyName("first_name")]
     public string? FirstName { get; set; }
 
-    [JsonProperty("last_name")]
+    [JsonPropertyName("last_name")]
     public string? LastName { get; set; }
 
-    [JsonProperty("tags")]
+    [JsonPropertyName("tags")]
     public string[]? Tags { get; set; }
 
-    [JsonProperty("skip_confirmation")]
+    [JsonPropertyName("skip_confirmation")]
     public bool SkipConfirmation { get; set; } = false;
 
-    [JsonProperty("extra_attributes")]
+    [JsonPropertyName("extra_attributes")]
     public Dictionary<string, object>? ExtraAttributes { get; set; }
 }

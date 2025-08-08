@@ -1,0 +1,14 @@
+{
+    "id": "Umbraco.Forms.Community.Mailcoach",
+    "name": "Umbraco Forms Mailcoach Subscriber workflow",
+    "version": "16.0.0",
+    "allowPackageTelemetry": true,
+    "extensions": [
+        {
+            "type": "bundle",
+            "alias": "Umbraco.Forms.Community.Mailcoach.Bundle",
+            "name": "Umbraco Forms Mailcoach Bundle",
+            "js": "/App_Plugins/Umbraco.Forms.Community.Mailcoach/umbraco-community-forms-mailcoach.js"
+        }
+    ]
+}

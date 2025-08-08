@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
+using System.Text.Json;
 using Umbraco.Community.Forms.Mailcoach.Configuration;
 using Umbraco.Community.Forms.Mailcoach.Models;
 using Umbraco.Community.Forms.Mailcoach.Services;
@@ -12,46 +12,47 @@ using Umbraco.Forms.Core.Providers.Models;
 using Umbraco.Forms.Core.Persistence.Dtos;
 using Umbraco.Forms.Core.Services;
 
+
 namespace Umbraco.Community.Forms.Mailcoach.Workflows;
 
 public class MailcoachWorkflow : WorkflowType
 {
     private readonly IPlaceholderParsingService placeholderParsingService;
     private readonly IMailcoachService mailcoachService;
-    private readonly ILogger<MailcoachWorkflow> _logger;
-    private readonly MailcoachOptions _mailcoachOptions;
+    private readonly ILogger<MailcoachWorkflow> logger;
+    private readonly MailcoachOptions mailcoachOptions;
 
     [Setting("Email List",
         Description = "Select the Mailcoach email list to add subscribers to",
-        View = "~/App_Plugins/Mailcoach/MailcoachEmailListPicker.html")]
+        View = "Umbraco.Forms.Community.Mailcoach.PropertyEditorUi.MailingListSelector")]
     public string EmailListId { get; set; } = string.Empty;
-
-    [Setting("Fields",
-        Description = "Map form fields to Mailcoach subscriber attributes.",
-        View = "FieldMapper")]
-    public string Fields { get; set; } = string.Empty;
 
     [Setting("Email",
         Description = "Select the field to map the subscriber email address to",
-        View = "TextWithFieldPicker")]
+        View = "Forms.PropertyEditorUi.TextWithFieldPicker")]
     public string Email { get; set; } = string.Empty;
 
+    [Setting("Fields",
+        Description = "Map form fields to Mailcoach subscriber attributes.",
+        View = "Forms.PropertyEditorUi.FieldMapper")]
+    public string Fields { get; set; } = string.Empty;
+
     [Setting("Tags",
-        Description = "Comma-separated tags to apply to all subscribers (optional)",
-        View = "TextField")]
+        Description = "List of tags to apply to all subscribers (optional)",
+        View = "Umb.PropertyEditorUi.MultipleTextString")]
     public string Tags { get; set; } = string.Empty;
 
     [Setting("Skip Confirmation",
         Description = "Subscribe users immediately without confirmation email",
-        View = "Checkbox")]
+        View = "Umb.PropertyEditorUi.Toggle")]
     public string SkipConfirmation { get; set; } = "false";
 
     public MailcoachWorkflow(IPlaceholderParsingService placeholderParsingService, IMailcoachService mailcoachService, ILogger<MailcoachWorkflow> logger, IOptions<MailcoachOptions> mailcoachOptions)
     {
         this.placeholderParsingService = placeholderParsingService;
         this.mailcoachService = mailcoachService;
-        _logger = logger;
-        _mailcoachOptions = mailcoachOptions.Value;
+        this.logger = logger;
+        this.mailcoachOptions = mailcoachOptions.Value;
 
         Id = new Guid("A4D5B1E8-2C3F-4A5B-8D9E-1F2A3B4C5D6E");
         Name = "Mailcoach Subscriber";
@@ -64,12 +65,12 @@ public class MailcoachWorkflow : WorkflowType
     {
         var exceptions = new List<Exception>();
 
-        if (string.IsNullOrEmpty(_mailcoachOptions.ApiDomain))
+        if (string.IsNullOrEmpty(mailcoachOptions.ApiDomain))
         {
             exceptions.Add(new ArgumentException("Mailcoach API Endpoint is not configured in appsettings.json"));
         }
 
-        if (string.IsNullOrEmpty(_mailcoachOptions.ApiToken))
+        if (string.IsNullOrEmpty(mailcoachOptions.ApiToken))
         {
             exceptions.Add(new ArgumentException("Mailcoach API Token is not configured in appsettings.json"));
         }
@@ -86,11 +87,11 @@ public class MailcoachWorkflow : WorkflowType
     {
         try
         {
-            if (string.IsNullOrEmpty(_mailcoachOptions.ApiDomain) ||
-                string.IsNullOrEmpty(_mailcoachOptions.ApiToken) ||
+            if (string.IsNullOrEmpty(mailcoachOptions.ApiDomain) ||
+                string.IsNullOrEmpty(mailcoachOptions.ApiToken) ||
                 string.IsNullOrEmpty(EmailListId))
             {
-                _logger.LogWarning("Mailcoach workflow not configured properly");
+                logger.LogWarning("Mailcoach workflow not configured properly");
                 return WorkflowExecutionStatus.NotConfigured;
             }
 
@@ -98,7 +99,7 @@ public class MailcoachWorkflow : WorkflowType
 
             if (string.IsNullOrEmpty(subscriber.Email))
             {
-                _logger.LogWarning("No email address found in form submission");
+                logger.LogWarning("No email address found in form submission");
                 return WorkflowExecutionStatus.Failed;
             }
 
@@ -108,7 +109,7 @@ public class MailcoachWorkflow : WorkflowType
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error executing Mailcoach workflow");
+            logger.LogError(ex, "Error executing Mailcoach workflow");
             return WorkflowExecutionStatus.Failed;
         }
     }
@@ -118,22 +119,21 @@ public class MailcoachWorkflow : WorkflowType
         var subscriber = new MailcoachSubscriber();
 
         List<FieldMapping> mappings = [];
+
         if (!string.IsNullOrEmpty(Fields))
         {
-            var source = JsonConvert.DeserializeObject<IEnumerable<FieldMapping>>(Fields, FormsJsonSerializerSettings.Default) ?? [];
+            var source = JsonSerializer.Deserialize<IEnumerable<FieldMapping>>(Fields, FormsJsonSerializerOptions.Default);
             if (source != null)
-            {
                 mappings = [.. source.Select(x =>
-                {
-                    x.StaticValue = placeholderParsingService.ParsePlaceHolders(x.StaticValue, false, context.Record);
-                    return x;
-                })];
-            }
+            {
+                x.StaticValue = placeholderParsingService.ParsePlaceHolders(x.StaticValue, false, context.Record);
+                return x;
+            })];
         }
 
         try
         {
-            subscriber.Email = GetTextWithFieldPicker(Email, context.Record) ?? string.Empty;
+            subscriber.Email = placeholderParsingService.ParsePlaceHolders(Email, false, context.Record);
             foreach (var mapping in mappings)
             {
                 var fieldValue = GetMappedFieldValue(mapping, context.Record);
@@ -159,7 +159,7 @@ public class MailcoachWorkflow : WorkflowType
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error parsing field mappings configuration");
+            logger.LogError(ex, "Error parsing field mappings configuration");
         }
 
         // Apply tags from the direct Tags setting
@@ -189,24 +189,10 @@ public class MailcoachWorkflow : WorkflowType
                 return recordField.ValuesAsString(false);
             }
             else
-                _logger.LogWarning("Workflow {WorkflowName}: The field mapping with alias, {FieldMappingAlias}, did not match any record fields. This is probably caused by the record field being marked as sensitive and the workflow has been set not to include sensitive data", (object)this.Workflow?.Name, (object)mapping.Alias);
+                logger.LogWarning("Workflow {WorkflowName}: The field mapping with alias, {FieldMappingAlias}, did not match any record fields. This is probably caused by the record field being marked as sensitive and the workflow has been set not to include sensitive data", Workflow?.Name, mapping.Alias);
         }
 
 
         return string.Empty;
-    }
-
-    private string GetTextWithFieldPicker(string field, Record record)
-    {
-        if (field.StartsWith('{') && field.EndsWith('}'))
-        {
-            var alias = field.Trim('{', '}');
-            var recordField = record.RecordFields.FirstOrDefault(f => f.Value.Alias.InvariantEquals(alias)).Value;
-            return recordField.ValuesAsString();
-        }
-        else
-        {
-            return field;
-        }
     }
 }

@@ -1,66 +1,66 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Umbraco.Community.Forms.Mailcoach.Models;
 
 public class MailcoachEmailList
 {
-    [JsonProperty("uuid")]
+    [JsonPropertyName("uuid")]
     public string Id { get; set; } = string.Empty;
 
-    [JsonProperty("name")]
+    [JsonPropertyName("name")]
     public string Name { get; set; } = string.Empty;
 
-    [JsonProperty("created_at")]
+    [JsonPropertyName("created_at")]
     public DateTime CreatedAt { get; set; }
 
-    [JsonProperty("updated_at")]
+    [JsonPropertyName("updated_at")]
     public DateTime UpdatedAt { get; set; }
 }
 
 public class MailcoachEmailListsResponse
 {
-    [JsonProperty("data")]
-    public List<MailcoachEmailList> Data { get; set; } = new();
+    [JsonPropertyName("data")]
+    public List<MailcoachEmailList> Data { get; set; } = [];
 
-    [JsonProperty("links")]
+    [JsonPropertyName("links")]
     public MailcoachLinks? Links { get; set; }
 
-    [JsonProperty("meta")]
+    [JsonPropertyName("meta")]
     public MailcoachMeta? Meta { get; set; }
 }
 
 public class MailcoachLinks
 {
-    [JsonProperty("first")]
+    [JsonPropertyName("first")]
     public string? First { get; set; }
 
-    [JsonProperty("last")]
+    [JsonPropertyName("last")]
     public string? Last { get; set; }
 
-    [JsonProperty("prev")]
+    [JsonPropertyName("prev")]
     public string? Prev { get; set; }
 
-    [JsonProperty("next")]
+    [JsonPropertyName("next")]
     public string? Next { get; set; }
 }
 
 public class MailcoachMeta
 {
-    [JsonProperty("current_page")]
+    [JsonPropertyName("current_page")]
     public int CurrentPage { get; set; }
 
-    [JsonProperty("from")]
+    [JsonPropertyName("from")]
     public int? From { get; set; }
 
-    [JsonProperty("last_page")]
+    [JsonPropertyName("last_page")]
     public int LastPage { get; set; }
 
-    [JsonProperty("per_page")]
+    [JsonPropertyName("per_page")]
     public int PerPage { get; set; }
 
-    [JsonProperty("to")]
+    [JsonPropertyName("to")]
     public int? To { get; set; }
 
-    [JsonProperty("total")]
+    [JsonPropertyName("total")]
     public int Total { get; set; }
 }

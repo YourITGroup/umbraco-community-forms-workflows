@@ -64,3 +64,4 @@ src/MailCoach.Test/Views/Partials
 src/MailCoach.Test/wwwroot/App_Plugins
 src/MailCoach.Test/appsettings-schema.*
 src/MailCoach.Test/umbraco-package-schema.json
+src/Umbraco.Community.Forms.Mailcoach/wwwroot
