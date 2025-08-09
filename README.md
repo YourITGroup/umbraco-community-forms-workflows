@@ -2,40 +2,43 @@
 
 ![Workflows for Umbraco Forms Logo](https://raw.githubusercontent.com/YourITGroup/our-umbraco-forms-workflows/main/GithubFiles/Logo/Subscribe_logo.png)
 
-Umbraco Forms Workflows by the community.
+Umbraco Forms Workflows by the community for Umbraco 16.
 
-Workflows include:
+Available workflows include:
 
 * Mailcoach Email Subscription sign-up
 * MailChimp Email Subscription sign-up
 
-## Installation
-
-1. Install the package via NuGet or include the project in your Umbraco solution
-2. Build and run your Umbraco application
-3. The workflow will be automatically registered and available in Umbraco Forms
-
 ## Configuration
 
-### Mailcoach
-
-Add Mailcoach Settings to `appsettings.json` with the following configuration:
+Add Workflow Settings to `appsettings.json` with the following configuration.  The Mailing List settings are optional and can be configured directly on the Workflow:
 
 ```json
 {
-  "Mailcoach": {
-    "ApiDomain": "your-mailcoach-domain.com",
-    "ApiToken": "your-mailcoach-api-token"
+  "Community": {
+    "Forms": {
+      "Mailcoach": {
+        "ApiDomain": "your-mailcoach-domain.com",
+        "ApiToken": "your-mailcoach-api-token"
+      },
+      "MailChimp": {
+        "ApiKey": "mailchimp-api-key"
+      }
+    }
   }
 }
 ```
 
+### Mailcoach Workflow
 
-## Requirements
+The Mailcoach workflow configuration accepts a domain name for a mailcoach server - for example, `{your-account}.mailcoach.app` or a private mailcoach server - as well as a Mailcoach token.  
+If not set, these will fall back to the settings in `appsettings`.
 
-- Umbraco CMS 16+
-- Umbraco Forms 16+
-- .NET 9.0
+
+### MailChimp Workflow
+
+The Mailcoach workflow configuration accepts an API Key.  If not set, it will fall back to the settings in `appsettings`.
+
 
 ## Logo
 
