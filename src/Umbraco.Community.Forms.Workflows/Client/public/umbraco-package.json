@@ -1,0 +1,14 @@
+{
+    "id": "Umbraco.Forms.Community.Workflows",
+    "name": "Umbraco Forms Community Workflows",
+    "version": "16.0.0",
+    "allowPackageTelemetry": true,
+    "extensions": [
+        {
+            "type": "bundle",
+            "alias": "Umbraco.Forms.Community.Workflows.Bundle",
+            "name": "Umbraco Forms Community Workflows Bundle",
+            "js": "/App_Plugins/Umbraco.Forms.Community.Workflows/umbraco-community-forms-workflows.js"
+        }
+    ]
+}

@@ -11,13 +11,14 @@
   "PackageType": "Package",
   "PackagesByAuthor": ["MemberListView", "OpenOrClosed"],
   "RelatedPackages": [],
-  "Title": "Mailcoach Subscription Workflow for Umbraco Forms",
+  "Title": "Umbraco Forms Community Workflows",
   "Screenshots": [],
   "Tags": [
     "Forms",
     "Workflow",
     "Mailing List",
-    "Mailcoach"
+    "Mailcoach",
+    "MailChimp"
   ],
   "VersionSpecificPackageIds": [],
   "VideoUrl": ""
