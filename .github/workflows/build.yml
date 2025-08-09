@@ -1,10 +1,10 @@
-name: Umbraco.Community.Forms.Mailcoach - CI
+name: Umbraco.Community.Forms.Workflows - CI
 
 on:
   pull_request:
 
 env:
-  SOLUTION: Umbraco.Community.Forms.Mailcoach.sln
+  SOLUTION: Umbraco.Community.Forms.Workflows.sln
   OUTPUT_PATH: ${{ github.workspace }}/.output
 
 jobs:
@@ -13,7 +13,7 @@ jobs:
     
     strategy:
       matrix:
-        dotnet-version: ['8.x' ]
+        dotnet-version: ['9.x' ]
 
     steps:
     - name: Checkout
@@ -29,13 +29,13 @@ jobs:
         dotnet-version: ${{ matrix.dotnet-version }}
   
     - name: Install dependencies
-      run: dotnet restore Umbraco.Community.Forms.Mailcoach.Release.sln
+      run: dotnet restore Umbraco.Community.Forms.Workflows.Release.sln
   
     - name: Build
-      run: dotnet build Umbraco.Community.Forms.Mailcoach.Release.sln --configuration Release --no-restore
+      run: dotnet build Umbraco.Community.Forms.Workflows.Release.sln --configuration Release --no-restore
         
     - name: Create the package
-      run: dotnet pack Umbraco.Community.Forms.Mailcoach.Release.sln --configuration Release -o ${{ env.OUTPUT_PATH }}
+      run: dotnet pack Umbraco.Community.Forms.Workflows.Release.sln --configuration Release -o ${{ env.OUTPUT_PATH }}
       
     - name: Upload NuGet artifacts
       uses: actions/upload-artifact@v4

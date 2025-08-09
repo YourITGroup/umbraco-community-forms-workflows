@@ -60,8 +60,8 @@ nunit-*.xml
 **/ood.flag
 
 .DS_Store
-src/MailCoach.Test/Views/Partials
-src/MailCoach.Test/wwwroot/App_Plugins
-src/MailCoach.Test/appsettings-schema.*
-src/MailCoach.Test/umbraco-package-schema.json
-src/Umbraco.Community.Forms.Mailcoach/wwwroot
+src/Forms.Test/Views/Partials
+src/Forms.Test/wwwroot/App_Plugins
+src/Forms.Test/appsettings-schema.*
+src/Forms.Test/umbraco-package-schema.json
+src/Umbraco.Community.Forms.Workflows/wwwroot
