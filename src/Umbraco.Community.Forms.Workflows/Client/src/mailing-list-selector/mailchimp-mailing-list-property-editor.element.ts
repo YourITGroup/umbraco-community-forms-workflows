@@ -60,7 +60,6 @@ export class MailChimpMailingListPropertyEditorElement
         this.#mailingListConfig = JSON.parse(value)
       } catch {}
     }
-    this.#fetchLists()
   }
 
   async #fetchLists() {
@@ -77,7 +76,6 @@ export class MailChimpMailingListPropertyEditorElement
     this.#mailingListConfig.apiKey = e.target.value.toString()
     // We need to re-query the mailing lists.
     this.#fetchLists()
-    this.#refreshValue()
   }
 
   #onSelectChange(e: UUISelectEvent) {
@@ -101,9 +99,9 @@ export class MailChimpMailingListPropertyEditorElement
     }
     .umb-forms-mailing-list-field {
       display: flex;
-      flex-direction: row;
-      gap: 0.5rem;
-      align-items: center;
+      flex-direction: column;
+      margin-bottom: 0.25rem;
+      gap: 0.25rem;
     }
   `
 

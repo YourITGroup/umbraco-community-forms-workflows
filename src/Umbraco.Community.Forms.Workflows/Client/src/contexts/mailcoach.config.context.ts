@@ -1,13 +1,13 @@
 import type { UmbControllerHost } from "@umbraco-cms/backoffice/controller-api";
 import { UmbContextBase } from "@umbraco-cms/backoffice/class-api";
 import { MailcoachConfigRepository } from "../repository/mailcoach.config.repository.js";
-import type { MailcoachEmailList } from "../generated/types.gen.js";
+import type { EmailList } from "../generated/types.gen.js";
 import { MAILCOACH_CONFIG_CONTEXT } from "./mailcoach.config.context.token.js";
 
 export class MailcoachConfigContext extends UmbContextBase {
   
   #repository: MailcoachConfigRepository;
-  #mailingLists?: MailcoachEmailList[];
+  #mailingLists?: EmailList[];
   #domain?: string = undefined
   #token?: string = undefined
 
@@ -16,7 +16,7 @@ export class MailcoachConfigContext extends UmbContextBase {
     this.#repository = new MailcoachConfigRepository(host);
   }
 
-  async getMailingLists(domain?: string, token?: string): Promise<MailcoachEmailList[] | undefined> {
+  async getMailingLists(domain?: string, token?: string): Promise<EmailList[] | undefined> {
     if (!this.#mailingLists || this.#domain !== domain || this.#token !== token) {
       this.#domain = domain
       this.#token = token
@@ -28,10 +28,10 @@ export class MailcoachConfigContext extends UmbContextBase {
     return this.#mailingLists;
   }
 
-  async refreshSettings(): Promise<MailcoachEmailList[] | undefined> {
-    this.#mailingLists = undefined;
-    return this.getMailingLists();
-  }
+  // async refreshSettings(): Promise<MailcoachEmailList[] | undefined> {
+  //   this.#mailingLists = undefined;
+  //   return this.getMailingLists();
+  // }
 }
 
 export default MailcoachConfigContext;

@@ -15,7 +15,7 @@ import type {
 } from "@umbraco-cms/backoffice/external/uui"
 import { UmbChangeEvent } from "@umbraco-cms/backoffice/event"
 import { MAILCOACH_CONFIG_CONTEXT } from "../contexts/mailcoach.config.context.token"
-import type { MailcoachEmailList } from "../generated/types.gen"
+import type { EmailList } from "../generated/types.gen"
 
 export type MailcoachMailingList = {
   domain?: string
@@ -45,7 +45,7 @@ export class MailcoachMailingListPropertyEditorElement
 
   #mailingListConfig: MailcoachMailingList = {}
 
-  #mailingLists: Array<MailcoachEmailList> = []
+  #mailingLists: Array<EmailList> = []
 
   constructor() {
     super()
@@ -61,7 +61,6 @@ export class MailcoachMailingListPropertyEditorElement
         this.#mailingListConfig = JSON.parse(value)
       } catch {}
     }
-    this.#fetchLists()
   }
 
   async #fetchLists() {
@@ -79,14 +78,12 @@ export class MailcoachMailingListPropertyEditorElement
     this.#mailingListConfig.domain = e.target.value.toString()
     // We need to re-query the mailing lists.
     this.#fetchLists()
-    this.#refreshValue()
   }
 
   #onTokenChange(e: UUIInputEvent) {
     this.#mailingListConfig.token = e.target.value.toString()
     // We need to re-query the mailing lists.
     this.#fetchLists()
-    this.#refreshValue()
   }
 
   #onSelectChange(e: UUISelectEvent) {
@@ -110,10 +107,9 @@ export class MailcoachMailingListPropertyEditorElement
     }
     .umb-forms-mailing-list-field {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       margin-bottom: 0.25rem;
       gap: 0.25rem;
-      align-items: center;
     }
   `
 

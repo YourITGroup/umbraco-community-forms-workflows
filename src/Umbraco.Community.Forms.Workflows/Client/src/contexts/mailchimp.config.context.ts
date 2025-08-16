@@ -26,10 +26,10 @@ export class MailChimpConfigContext extends UmbContextBase {
     return this.#mailingLists;
   }
 
-  async refreshSettings(): Promise<List[] | undefined> {
-    this.#mailingLists = undefined;
-    return this.getMailingLists();
-  }
+  // async refreshSettings(): Promise<List[] | undefined> {
+  //   this.#mailingLists = undefined;
+  //   return this.getMailingLists();
+  // }
 }
 
 export default MailChimpConfigContext;

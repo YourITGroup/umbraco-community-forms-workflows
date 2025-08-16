@@ -12,16 +12,20 @@
   "PackageType": "Package",
   "PackagesByAuthor": ["MemberListView", "OpenOrClosed"],
   "RelatedPackages": [],
-  "Title": "Umbraco Forms Community Workflows",
+  "Title": "Workflows",
   "IssueTrackerUrl": "https://github.com/YourITGroup/umbraco-community-forms-workflows/issues",
   "Screenshots": [
     {
-      "Caption": "MailChimp Workflow Configuration",
-      "ImageUrl": "https://raw.githubusercontent.com/YourITGroup/our-umbraco-forms-workflows/main/GithubFiles/Screenshots/MailChimp_config.png"
+      "Caption": "Campaign Monitor Workflow Configuration",
+      "ImageUrl": "https://raw.githubusercontent.com/YourITGroup/umbraco-community-forms-workflows/main/GithubFiles/Screenshots/CampaignMonitor_config.png"
     },
-      {
+    {
+      "Caption": "MailChimp Workflow Configuration",
+      "ImageUrl": "https://raw.githubusercontent.com/YourITGroup/umbraco-community-forms-workflows/main/GithubFiles/Screenshots/MailChimp_config.png"
+    },
+    {
       "Caption": "Mailcoach Workflow Configuration",
-      "ImageUrl": "https://raw.githubusercontent.com/YourITGroup/our-umbraco-forms-workflows/main/GithubFiles/Screenshots/Mailcoach_config.png"
+      "ImageUrl": "https://raw.githubusercontent.com/YourITGroup/umbraco-community-forms-workflows/main/GithubFiles/Screenshots/Mailcoach_config.png"
     }
   ],
   "Tags": [
@@ -29,7 +33,8 @@
     "Workflow",
     "Mailing List",
     "Mailcoach",
-    "MailChimp"
+    "MailChimp",
+    "Campaign Monitor"
   ],
   "VersionSpecificPackageIds": [],
   "VideoUrl": ""

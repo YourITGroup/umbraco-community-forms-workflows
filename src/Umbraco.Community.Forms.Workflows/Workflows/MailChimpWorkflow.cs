@@ -62,11 +62,6 @@ public class MailChimpWorkflow : WorkflowType
     {
         var exceptions = new List<Exception>();
 
-        if (string.IsNullOrEmpty(options.MailChimp.ApiKey))
-        {
-            exceptions.Add(new ArgumentException("MailChimp API Key is not configured in appsettings.json"));
-        }
-
         if (string.IsNullOrEmpty(EmailListConfiguration))
         {
             exceptions.Add(new ArgumentException("Email List is not configured"));
