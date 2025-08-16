@@ -4,6 +4,7 @@ public class CommunityOptions
 {
     public const string SectionName = "Community:Forms";
     
-    public Mailcoach Mailcoach { get; set; }
-    public MailChimp MailChimp { get; set; }
+    public required Mailcoach Mailcoach { get; set; }
+    public required MailChimp MailChimp { get; set; }
+    public required CampaignMonitor CampaignMonitor { get; set; }
 }

@@ -1,6 +1,6 @@
-# Workflows for Umbraco Forms
+# Workflows
 
-![Workflows for Umbraco Forms Logo](https://raw.githubusercontent.com/YourITGroup/our-umbraco-forms-workflows/main/GithubFiles/Logo/Subscribe_logo.png)
+![Workflows for Umbraco Forms Logo](https://raw.githubusercontent.com/YourITGroup/umbraco-community-forms-workflows/main/GithubFiles/Logo/Subscribe_logo.png)
 
 Umbraco Forms Workflows by the community for Umbraco 16.
 
@@ -8,6 +8,7 @@ Available workflows include:
 
 * Mailcoach Email Subscription sign-up
 * MailChimp Email Subscription sign-up
+* Campaign Manager Email Subscription sign-up
 
 ## Configuration
 
@@ -34,11 +35,16 @@ Add Workflow Settings to `appsettings.json` with the following configuration.  T
 The Mailcoach workflow configuration accepts a domain name for a mailcoach server - for example, `{your-account}.mailcoach.app` or a private mailcoach server - as well as a Mailcoach token.  
 If not set, these will fall back to the settings in `appsettings`.
 
-
 ### MailChimp Workflow
 
 The Mailcoach workflow configuration accepts an API Key.  If not set, it will fall back to the settings in `appsettings`.
 
+
+### Campaign Monitor Workflow
+
+The Campaign Monitor workflow configuration accepts an API Key and Client (if more than one found).  If not set, it will fall back to the settings in `appsettings`.
+
+It also supports opting in for SMS Sending and Tracking.
 
 ## Logo
 

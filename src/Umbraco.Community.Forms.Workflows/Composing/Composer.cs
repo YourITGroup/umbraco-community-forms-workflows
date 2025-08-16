@@ -18,6 +18,7 @@ public class Composer : IComposer
         builder.Services.AddHttpClient<IMailcoachService, MailcoachService>();
 
         builder.WithCollectionBuilder<WorkflowCollectionBuilder>()
+            .Add<CampaignMonitorWorkflow>()
             .Add<MailcoachWorkflow>()
             .Add<MailChimpWorkflow>();
             

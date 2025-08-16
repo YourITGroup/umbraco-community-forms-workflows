@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Api.Common.Attributes;
 using Umbraco.Cms.Api.Management.Controllers;
-using Umbraco.Community.Forms.Workflows.Models;
 using Umbraco.Community.Forms.Workflows.Models.Mailcoach;
 using Umbraco.Community.Forms.Workflows.Services;
 

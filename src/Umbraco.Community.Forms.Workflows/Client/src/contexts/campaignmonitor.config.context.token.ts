@@ -1,0 +1,4 @@
+import type { CampaignMonitorConfigContext } from "./campaignmonitor.config.context.js";
+import { UmbContextToken } from "@umbraco-cms/backoffice/context-api";
+
+export const CAMPAIGNMONITOR_CONFIG_CONTEXT = new UmbContextToken<CampaignMonitorConfigContext>("campaignmonitor-config-context");

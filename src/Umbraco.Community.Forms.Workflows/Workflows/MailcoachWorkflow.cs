@@ -65,14 +65,9 @@ public class MailcoachWorkflow : WorkflowType
     {
         var exceptions = new List<Exception>();
 
-        if (string.IsNullOrEmpty(options.Mailcoach.ApiDomain))
+        if (string.IsNullOrEmpty(EmailListConfiguration))
         {
-            exceptions.Add(new ArgumentException("Mailcoach API Endpoint is not configured in appsettings.json"));
-        }
-
-        if (string.IsNullOrEmpty(options.Mailcoach.ApiToken))
-        {
-            exceptions.Add(new ArgumentException("Mailcoach API Token is not configured in appsettings.json"));
+            exceptions.Add(new ArgumentException("Email List is not configured"));
         }
 
         if (string.IsNullOrEmpty(Email))

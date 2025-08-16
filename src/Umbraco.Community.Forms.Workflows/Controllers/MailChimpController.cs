@@ -19,7 +19,7 @@ public class MailChimpController(IOptions<CommunityOptions> options) : Managemen
     [ProducesResponseType(typeof(IEnumerable<MailChimp.Net.Models.List>), 200)]
     public async Task<IEnumerable<MailChimp.Net.Models.List>> GetMailChimpLists(string? apiKey)
     {
-        apiKey ??= options.Value.MailChimp.ApiKey;
+        apiKey ??= options.Value.MailChimp?.ApiKey;
         try
         {
             var mailChimp = new MailChimpManager(apiKey);
