@@ -107,7 +107,7 @@ public class MailChimpWorkflow : WorkflowType
             }
 
             var mc = new MailChimpManager(listConfig.ApiKey ?? options.MailChimp.ApiKey);
-            await SubscribeMember(mc, listConfig.ListId, email, mappings);
+            await SubscribeMember(mc, listConfig.ListId, email, mappings, context);
             if (!string.IsNullOrEmpty(Tags))
             {
                 var tags = Tags.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(t => t.Trim());
@@ -122,7 +122,7 @@ public class MailChimpWorkflow : WorkflowType
         }
     }
 
-    private async Task SubscribeMember(MailChimpManager mc, string listId, string email, List<FieldMapping> mergeFields)
+    private async Task SubscribeMember(MailChimpManager mc, string listId, string email, List<FieldMapping> mergeFields, WorkflowExecutionContext context)
     {
         _ = bool.TryParse(MarkAsPending, out bool skipConfirmation);
 
@@ -133,12 +133,12 @@ public class MailChimpWorkflow : WorkflowType
             EmailType = "html",
             TimestampOpt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
             StatusIfNew = skipConfirmation ? Status.Pending : Status.Subscribed,
-            MergeFields = mergeFields.ToDictionary(k => k.Alias, v => (object)v.Value)
+            MergeFields = mergeFields.ToDictionary(k => k.Alias, v => (object)GetMappedFieldValue(v, context))
         };
 
         await mc.Members.AddOrUpdateAsync(listId, member);
     }
-    
+
     private async Task TagMember(MailChimpManager mc, string listId, string email, IEnumerable<string> tagNames)
     {
         var tagIds = await GetExistingTagIds(listId, tagNames);
@@ -149,7 +149,7 @@ public class MailChimpWorkflow : WorkflowType
             await mc.ListSegments.AddMemberAsync(listId, $"{tagId}", member);
         }
     }
-        
+
     private async Task<IEnumerable<int>> GetExistingTagIds(string listId, IEnumerable<string> tagNames)
     {
         var mc = new MailChimpManager(options.MailChimp.ApiKey);
@@ -171,4 +171,26 @@ public class MailChimpWorkflow : WorkflowType
 
         return tagIds;
     }
+
+    private string GetMappedFieldValue(FieldMapping mapping, WorkflowExecutionContext context)
+    {
+        if (!string.IsNullOrEmpty(mapping.StaticValue))
+        {
+            return mapping.StaticValue;
+        }
+        else if (!string.IsNullOrEmpty(mapping.Value))
+        {
+            var recordField = context.Record.GetRecordField(new Guid(mapping.Value));
+            if (recordField != null)
+            {
+                return recordField.ValuesAsString(false);
+            }
+            else
+                logger.LogWarning("Workflow {WorkflowName}: The field mapping with alias, {FieldMappingAlias}, did not match any record fields. This is probably caused by the record field being marked as sensitive and the workflow has been set not to include sensitive data", Workflow?.Name, mapping.Alias);
+        }
+
+
+        return string.Empty;
+    }
+    
 }

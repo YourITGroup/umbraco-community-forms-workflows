@@ -105,7 +105,7 @@ public class CampaignMonitorWorkflow : WorkflowType
                         {
                             return new SubscriberCustomField {
                                 Key = x.Alias,
-                                Value = placeholderParsingService.ParsePlaceHolders(x.StaticValue, false, context.Record)
+                                Value = GetMappedFieldValue(x, context)
                             };
                         })];
             }
@@ -141,6 +141,27 @@ public class CampaignMonitorWorkflow : WorkflowType
             logger.LogError(ex, "Error executing CampaignMonitor workflow");
             return WorkflowExecutionStatus.Failed;
         }
+    }
+
+    private string GetMappedFieldValue(FieldMapping mapping, WorkflowExecutionContext context)
+    {
+        if (!string.IsNullOrEmpty(mapping.StaticValue))
+        {
+            return mapping.StaticValue;
+        }
+        else if (!string.IsNullOrEmpty(mapping.Value))
+        {
+            var recordField = context.Record.GetRecordField(new Guid(mapping.Value));
+            if (recordField != null)
+            {
+                return recordField.ValuesAsString(false);
+            }
+            else
+                logger.LogWarning("Workflow {WorkflowName}: The field mapping with alias, {FieldMappingAlias}, did not match any record fields. This is probably caused by the record field being marked as sensitive and the workflow has been set not to include sensitive data", Workflow?.Name, mapping.Alias);
+        }
+
+
+        return string.Empty;
     }
 
 }
