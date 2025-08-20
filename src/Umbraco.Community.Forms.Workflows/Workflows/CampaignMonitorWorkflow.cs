@@ -147,7 +147,7 @@ public class CampaignMonitorWorkflow : WorkflowType
     {
         if (!string.IsNullOrEmpty(mapping.StaticValue))
         {
-            return mapping.StaticValue;
+            return placeholderParsingService.ParsePlaceHolders(mapping.StaticValue, false, context.Record);;
         }
         else if (!string.IsNullOrEmpty(mapping.Value))
         {
@@ -157,11 +157,10 @@ public class CampaignMonitorWorkflow : WorkflowType
                 return recordField.ValuesAsString(false);
             }
             else
-                logger.LogWarning("Workflow {WorkflowName}: The field mapping with alias, {FieldMappingAlias}, did not match any record fields. This is probably caused by the record field being marked as sensitive and the workflow has been set not to include sensitive data", Workflow?.Name, mapping.Alias);
+                logger.LogWarning("Workflow {workflowName}: The field mapping with alias, {fieldMappingAlias}, did not match any record fields. This is probably caused by the record field being marked as sensitive and the workflow has been set not to include sensitive data", Workflow?.Name, mapping.Alias);
         }
 
 
         return string.Empty;
     }
-
 }
