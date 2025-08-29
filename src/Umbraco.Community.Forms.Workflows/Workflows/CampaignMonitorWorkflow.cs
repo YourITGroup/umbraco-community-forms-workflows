@@ -147,7 +147,7 @@ public class CampaignMonitorWorkflow : WorkflowType
     {
         if (!string.IsNullOrEmpty(mapping.StaticValue))
         {
-            return placeholderParsingService.ParsePlaceHolders(mapping.StaticValue, false, context.Record);;
+            return placeholderParsingService.ParsePlaceHolders(mapping.StaticValue, false, context.Record);
         }
         else if (!string.IsNullOrEmpty(mapping.Value))
         {
