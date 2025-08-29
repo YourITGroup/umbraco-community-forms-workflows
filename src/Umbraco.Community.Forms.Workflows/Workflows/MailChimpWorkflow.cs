@@ -90,13 +90,7 @@ public class MailChimpWorkflow : WorkflowType
 
             if (!string.IsNullOrEmpty(Fields))
             {
-                var source = JsonSerializer.Deserialize<IEnumerable<FieldMapping>>(Fields, FormsJsonSerializerOptions.Default);
-                if (source != null)
-                    mappings = [.. source.Select(x =>
-                        {
-                            x.StaticValue = placeholderParsingService.ParsePlaceHolders(x.StaticValue, false, context.Record);
-                            return x;
-                        })];
+                mappings = [.. JsonSerializer.Deserialize<IEnumerable<FieldMapping>>(Fields, FormsJsonSerializerOptions.Default) ?? []];
             }
             var email = placeholderParsingService.ParsePlaceHolders(Email, false, context.Record);
 
@@ -176,7 +170,7 @@ public class MailChimpWorkflow : WorkflowType
     {
         if (!string.IsNullOrEmpty(mapping.StaticValue))
         {
-            return mapping.StaticValue;
+            return placeholderParsingService.ParsePlaceHolders(mapping.StaticValue, false, context.Record);;
         }
         else if (!string.IsNullOrEmpty(mapping.Value))
         {
@@ -186,7 +180,7 @@ public class MailChimpWorkflow : WorkflowType
                 return recordField.ValuesAsString(false);
             }
             else
-                logger.LogWarning("Workflow {WorkflowName}: The field mapping with alias, {FieldMappingAlias}, did not match any record fields. This is probably caused by the record field being marked as sensitive and the workflow has been set not to include sensitive data", Workflow?.Name, mapping.Alias);
+                logger.LogWarning("Workflow {workflowName}: The field mapping with alias, {fieldMappingAlias}, did not match any record fields. This is probably caused by the record field being marked as sensitive and the workflow has been set not to include sensitive data", Workflow?.Name, mapping.Alias);
         }
 
 

@@ -99,7 +99,14 @@ public class MailcoachService : IMailcoachService
             logger.LogWarning("ConfigureBaseAddress: Mailcoach API not configured properly");
         }
 
-        httpClient.BaseAddress = new Uri($"https://{domain?.TrimEnd(['/', ' '])}/api/");
+        try
+        {
+            httpClient.BaseAddress = new Uri($"https://{domain?.TrimEnd(['/', ' '])}/api/");
+        }
+        catch
+        {
+            logger.LogWarning("Could not configure base address for Mailcoach Server, workflows will fail");
+        }
     }
 
     /// <inheritdoc />

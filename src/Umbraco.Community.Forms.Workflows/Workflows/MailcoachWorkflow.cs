@@ -118,13 +118,7 @@ public class MailcoachWorkflow : WorkflowType
 
         if (!string.IsNullOrEmpty(Fields))
         {
-            var source = JsonSerializer.Deserialize<IEnumerable<FieldMapping>>(Fields, FormsJsonSerializerOptions.Default);
-            if (source != null)
-                mappings = [.. source.Select(x =>
-            {
-                x.StaticValue = placeholderParsingService.ParsePlaceHolders(x.StaticValue, false, context.Record);
-                return x;
-            })];
+            mappings = [.. JsonSerializer.Deserialize<IEnumerable<FieldMapping>>(Fields, FormsJsonSerializerOptions.Default) ?? []];
         }
 
         try
@@ -132,7 +126,7 @@ public class MailcoachWorkflow : WorkflowType
             subscriber.Email = placeholderParsingService.ParsePlaceHolders(Email, false, context.Record);
             foreach (var mapping in mappings)
             {
-                var fieldValue = GetMappedFieldValue(mapping, context.Record);
+                var fieldValue = GetMappedFieldValue(mapping, context);
                 if (string.IsNullOrEmpty(fieldValue)) continue;
 
                 switch (mapping.Alias.ToLowerInvariant())
@@ -171,21 +165,21 @@ public class MailcoachWorkflow : WorkflowType
         return subscriber;
     }
 
-    private string GetMappedFieldValue(FieldMapping mapping, Record record)
+    private string GetMappedFieldValue(FieldMapping mapping, WorkflowExecutionContext context)
     {
         if (!string.IsNullOrEmpty(mapping.StaticValue))
         {
-            return mapping.StaticValue;
+            return placeholderParsingService.ParsePlaceHolders(mapping.StaticValue, false, context.Record);;
         }
         else if (!string.IsNullOrEmpty(mapping.Value))
         {
-            var recordField = record.GetRecordField(new Guid(mapping.Value));
+            var recordField = context.Record.GetRecordField(new Guid(mapping.Value));
             if (recordField != null)
             {
                 return recordField.ValuesAsString(false);
             }
             else
-                logger.LogWarning("Workflow {WorkflowName}: The field mapping with alias, {FieldMappingAlias}, did not match any record fields. This is probably caused by the record field being marked as sensitive and the workflow has been set not to include sensitive data", Workflow?.Name, mapping.Alias);
+                logger.LogWarning("Workflow {workflowName}: The field mapping with alias, {fieldMappingAlias}, did not match any record fields. This is probably caused by the record field being marked as sensitive and the workflow has been set not to include sensitive data", Workflow?.Name, mapping.Alias);
         }
 
 
