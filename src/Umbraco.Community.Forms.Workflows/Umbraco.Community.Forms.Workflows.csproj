@@ -16,7 +16,7 @@
 
 	<!-- NuGet package metadata -->
 	<PropertyGroup>
-		<Version>16.1.1</Version>
+		<Version>16.1.2</Version>
 		<Description>
 			Umbraco Forms Workflows by the community, includes mailing list workflows for Campaign Monitor, Mailcoach and MailChimp
 		</Description>
