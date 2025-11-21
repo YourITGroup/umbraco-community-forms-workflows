@@ -65,3 +65,4 @@ src/Forms.Test/wwwroot/App_Plugins
 src/Forms.Test/appsettings-schema.*
 src/Forms.Test/umbraco-package-schema.json
 src/Umbraco.Community.Forms.Workflows/wwwroot
+src/Forms.Test/umbraco/Data
