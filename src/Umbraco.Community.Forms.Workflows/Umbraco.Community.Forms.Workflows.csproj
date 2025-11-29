@@ -16,14 +16,14 @@
 
 	<!-- NuGet package metadata -->
 	<PropertyGroup>
-		<Version>17.0.0</Version>
+		<Version>17.0.1</Version>
 		<Description>
 			Umbraco Forms Workflows by the community, includes mailing list workflows for Campaign Monitor, Mailcoach and MailChimp
 		</Description>
 		<Company>Your IT Group</Company>
 		<Product>Umbraco.Community.Forms.Workflows</Product>
 		<Authors>Robert Foster-Williams</Authors>
-		<Copyright>Copyright © 2025 © $(Company)</Copyright>
+		<Copyright>Copyright © 2025 $(Company)</Copyright>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/YourITGroup/our-umbraco-forms-workflows</PackageProjectUrl>
 		<PackageIcon>Subscribe_logo.png</PackageIcon>
@@ -43,7 +43,7 @@
 	<ItemGroup>
 		<PackageReference Include="campaignmonitor-api" Version="6.0.2" />
 		<PackageReference Include="MailChimp.Net.V3" Version="5.7.0" />
-		<PackageReference Include="Umbraco.Forms.Core.Providers" Version="[17.0.0-rc3,17.999)" />
+		<PackageReference Include="Umbraco.Forms.Core.Providers" Version="[17.0.0,17.999)" />
 	</ItemGroup>
 
 	<ItemGroup>
