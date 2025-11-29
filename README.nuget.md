@@ -2,7 +2,7 @@
 
 ![Workflows for Umbraco Forms Logo](https://raw.githubusercontent.com/YourITGroup/umbraco-community-forms-workflows/main/GithubFiles/Logo/Subscribe_logo.png)
 
-Umbraco Forms Workflows by the community for Umbraco 16.
+Umbraco Forms Workflows by the community for Umbraco.
 
 Available workflows include:
 
